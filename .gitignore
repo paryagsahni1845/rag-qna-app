@@ -1,0 +1,67 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.Python
+
+# Environment Variables (CRITICAL - contains API keys)
+.env
+*.env
+.env.local
+.env.production
+
+# Virtual environments
+venv/
+env/
+ragenv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Streamlit secrets (if you create them locally later)
+.streamlit/secrets.toml
+
+# Vector store data (will be rebuilt on deployment)
+artifacts/chroma_db/
+
+# Keep artifacts folder structure
+!artifacts/
+!artifacts/.gitkeep
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Logs and temporary files
+*.log
+logs/
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+
+# OS files
+.DS_Store
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# Python distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# ML model cache
+.cache/
+transformers_cache/
+huggingface_hub/
