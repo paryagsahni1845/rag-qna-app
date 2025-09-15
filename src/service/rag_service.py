@@ -1,18 +1,13 @@
 import os
-from dotenv import load_dotenv
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from langchain_community.vectorstores import Chroma
+import chromadb
+from chromadb.config import Settings # 🔹 Import Settings for ChromaDB configuration
 
 # Local imports
 from src.components.data_loader import load_and_chunk_pdf
-from src.components.llm import get_llm, get_embeddings
-
-# Load API keys from .env
-load_dotenv()
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-# HF_TOKEN is no longer needed here as it's loaded in llm.py
-# HF_TOKEN = os.getenv("HF_TOKEN") 
+from src.components.llm import get_embeddings, get_llm
 
 # Configuration constants
 PDF_FILE_PATH = "mlbook.pdf"
@@ -28,8 +23,12 @@ def initialize_vector_store():
     else:
         print("Initializing vector store for the first time...")
         documents = load_and_chunk_pdf(PDF_FILE_PATH)
-        embeddings = get_embeddings() # Removed the HF_TOKEN argument
-        Chroma.from_documents(documents, embeddings, persist_directory=CHROMA_DB_DIR)
+        embeddings = get_embeddings()
+        
+        # Corrected: Use a persistent client with explicit settings
+        client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
+        
+        Chroma.from_documents(documents, embeddings, client=client)
         print("Vector store initialized and saved.")
 
 def get_qa_chain():
@@ -39,12 +38,17 @@ def get_qa_chain():
     if not os.path.exists(CHROMA_DB_DIR) or not os.listdir(CHROMA_DB_DIR):
         raise RuntimeError("Vector store not found. Run src/main.py first.")
     
-    llm = get_llm() 
-    embeddings = get_embeddings() 
+    llm = get_llm()
+    embeddings = get_embeddings()
+    
+    # Corrected: Use a persistent client with explicit settings
+    client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
+    
     vector_store = Chroma(
         embedding_function=embeddings,
-        persist_directory=CHROMA_DB_DIR
+        client=client
     )
+    
     retriever = vector_store.as_retriever(search_kwargs={"k": 5})
 
     memory = ConversationBufferMemory(
