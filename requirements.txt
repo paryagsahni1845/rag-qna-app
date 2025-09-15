@@ -8,3 +8,4 @@ tiktoken
 langchain-huggingface
 langchain-groq
 sentence-transformers
+pysqlite3-binary

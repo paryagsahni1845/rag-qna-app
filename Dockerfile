@@ -4,12 +4,17 @@ FROM python:3.11-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install a minimal build toolchain and the CPU-only version of torch first for stability
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+# Install system dependencies for sqlite3 and other libraries
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the rest of the requirements file and install the remaining Python dependencies
+# Copy the requirements file and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install pysqlite3 to ensure the correct version of sqlite3
+RUN pip install pysqlite3
 
 # Copy the entire application code into the container
 COPY src /app/src
