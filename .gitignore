@@ -27,12 +27,13 @@ Thumbs.db
 # Streamlit secrets (if you create them locally later)
 .streamlit/secrets.toml
 
-# Vector store data (will be rebuilt on deployment)
-artifacts/chroma_db/
+# Keep artifacts folder (26MB is acceptable for Streamlit)
+# artifacts/chroma_db/  # Commented out - we'll include the vector store
 
-# Keep artifacts folder structure
-!artifacts/
-!artifacts/.gitkeep
+# But ignore logs and temp files in artifacts
+artifacts/logs/
+artifacts/temp/
+artifacts/*.log
 
 # Jupyter notebooks
 .ipynb_checkpoints/
