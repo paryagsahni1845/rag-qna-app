@@ -3,7 +3,7 @@ langchain
 langchain-community
 langchain-core
 pypdf
-chromadb
+chromadb==0.4.22
 tiktoken
 langchain-huggingface
 langchain-groq
