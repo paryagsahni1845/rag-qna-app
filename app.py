@@ -1,9 +1,9 @@
 import streamlit as st
 
-__import__("pysqlite3")
-import sys
-sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
-import sqlite3
+#__import__("pysqlite3")
+#import sys
+#sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+#import sqlite3
 
 from langchain_core.messages import HumanMessage
 from src.service.rag_service import get_qa_chain
